@@ -1,6 +1,7 @@
 package com.dodle.controller;
 
 import java.sql.Date;
+import java.util.ArrayList;
 
 import com.dodle.model.dao.Dao;
 import com.dodle.model.vo.CPU;
@@ -23,6 +24,17 @@ public class Controller {
 		
 	}
 	
+	public void selectCpu() {
+		System.out.println("cpu 조회 결과입니다.");
+		
+		ArrayList<CPU> myCpu = new Dao().selectCpu();
+		
+		if(myCpu.isEmpty()) {
+			System.out.println("전체조회결과 없슴");
+		}else {
+			System.out.println(myCpu);
+		}
+	}
 	
 	
 	

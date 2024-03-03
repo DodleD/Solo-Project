@@ -19,7 +19,7 @@ public class Menu {
 			System.out.println("환영합니다, 원하시는 번호를 선택해주세요");
 			System.out.println("1. 컴퓨터 부품 추가");
 			System.out.println("2. 컴퓨터 부품 구매");
-			System.out.println("3. ");
+			System.out.println("3. 전체 조회");
 			
 			int menu = sc.nextInt();
 			sc.nextLine();
@@ -33,7 +33,7 @@ public class Menu {
 				
 				break;
 			case 3:
-				
+				c.selectCpu();
 				
 				break;
 			default:
@@ -70,7 +70,7 @@ public class Menu {
 				this.cpuInputData("CPU");
 				break;
 			case 2:
-				
+		
 				
 				break;
 			case 3:
@@ -89,6 +89,8 @@ public class Menu {
 	
 	
 	public void cpuInputData(String name) {
+		System.out.println("***** " + name + "추가입니다 *****");
+		
 		System.out.print(name + " 이름 : ");
 		String cpuName = sc.nextLine();
 		
