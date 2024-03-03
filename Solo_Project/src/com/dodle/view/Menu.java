@@ -3,23 +3,26 @@ package com.dodle.view;
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.dodle.controller.Controller;
+import com.dodle.model.dao.Dao;
 import com.dodle.model.vo.CPU;
 
 public class Menu {
 	Scanner sc = new Scanner(System.in);
 	Controller c = new Controller();
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-	
-	
+	CPU cpu = new CPU();
+	Dao d = new Dao();
 	public void mainMenu() {
 		while(true) {
 			System.out.println("환영합니다, 원하시는 번호를 선택해주세요");
 			System.out.println("1. 컴퓨터 부품 추가");
-			System.out.println("2. 컴퓨터 부품 구매");
-			System.out.println("3. 전체 조회");
+			System.out.println("2. 등록된 컴퓨터 부품 수정");
+			System.out.println("3. 등록된 부품 삭제");
+			System.out.println("4. 전체 조회");
 			
 			int menu = sc.nextInt();
 			sc.nextLine();
@@ -29,12 +32,15 @@ public class Menu {
 				
 				break;
 			case 2:
-				
+				updateParts();
 				
 				break;
 			case 3:
-				c.selectCpu();
+				deleteCpu();
 				
+				break;
+			case 4:
+				c.selectCpu();
 				break;
 			default:
 				
@@ -86,8 +92,43 @@ public class Menu {
 		}
 	}
 	
+	public void updateParts() {
+
+		while(true) {
+			System.out.println("등록된 부품 수정 입니다. 원하시는 부품 선택해주세요. ");
+			System.out.println("1. CPU");
+			System.out.println("2. VGA");
+			System.out.println("3. Mainboard");
+			System.out.println("9. 이전 메뉴로");
+			
+			int menu = sc.nextInt();
+					   sc.nextLine();
+					   
+			switch(menu) {
+			case 1:
+				this.updateCpu("CPU");
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 9:
+				System.out.println("이전 메뉴로 이동합니다.");
+				return;
+			default:
+				System.out.println("잘못누르셨습니다. 다시 입력해주세요");
+				break;
+
+			}//end switch
+			
+		}//end while
+	}//end updateParts
 	
-	
+
+    /**
+   
+     * 데이터 input 메서드들
+     */
 	public void cpuInputData(String name) {
 		System.out.println("***** " + name + "추가입니다 *****");
 		
@@ -118,17 +159,8 @@ public class Menu {
 		String cpuSocket = sc.nextLine();
 		
 		System.out.print(name + " 출시일 : ");
-		String cpuRelease = sc.nextLine();
-		//날짜 입력받기 위해 사용한 것
-		java.util.Date parsedDate = null;
-		try {
-			parsedDate = format.parse(cpuRelease);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Date sqlDate = dateConversion(sc.nextLine());
 		
-		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
 		
 		System.out.print(name + " cpu 재고 : ");
 		int cpuStock = sc.nextInt();
@@ -142,5 +174,157 @@ public class Menu {
 		
 	}//end cpuInsert
 	
+	public void vgaInputDate(String name) {
+		
+	}
 	
+	public void MainboardInputDate(String name) {
+	
+	}
+	
+	
+	
+	/**
+	 * 데이터 update 메서드들
+	 */
+	public void updateCpu(String name) {
+		String reName = d.selectCpu().get(0).getCpuName();
+		int reCinebench = d.selectCpu().get(0).getCpuCinebench();
+		String reBaseclock = d.selectCpu().get(0).getCpuBaseclock();
+		String reBoostclock = d.selectCpu().get(0).getCpuBoostclook();
+		String rePowerusage = d.selectCpu().get(0).getCpuPowerusage();
+		int rePrice = d.selectCpu().get(0).getCpuPrice();
+		String reMfrname = d.selectCpu().get(0).getCpuMfrName();
+		String reSocket = d.selectCpu().get(0).getCpuSocket();
+		int reStock = d.selectCpu().get(0).getCpuStock();
+		Date reDate = d.selectCpu().get(0).getCpuRelease();
+		System.out.println("***** " + name + "수정 입니다. *****");
+		c.selectCpu(); 
+		
+		System.out.print("\n수정하실 CPU 고유번호를 입력해주세요 : ");		
+		int index = sc.nextInt();
+					sc.nextLine();
+					
+		ArrayList<String> choice = new ArrayList<>();
+		int count = 0;
+		
+		while(true) {	
+			System.out.println("\n수정하고 싶은 것들을 입력해주세요.[ 이름, 벤치, 베이스클럭, 부스트클럭, 사용전력"
+					+ "가격, 제조사, 소켓명, 재고 ]");
+			System.out.println("입력을 종료하시려면 exit을 입력해주세요.");
+			choice.add(count, sc.nextLine());
+			if(choice.get(count).equals("exit")) {
+				choice.remove(count);
+				break;
+			}// 이어받기
+			
+			if(choice.get(count).equals("이름")) {
+				System.out.print("변경하실 이름을 입력해주세요 : ");
+				reName = sc.nextLine();
+			}
+
+			else if(choice.get(count).equals("벤치")) {
+				System.out.print("변경하실 벤치 성능을 입력해주세요 : ");
+				reCinebench = sc.nextInt();
+							  sc.nextLine();
+			}
+			else if(choice.get(count).equals("베이스클럭")){
+				System.out.print("변경하실 베이스 클럭을 입력해주세요 : ");
+				reBaseclock = sc.nextLine();
+
+			}
+			else if(choice.get(count).equals("부스트클럭")){
+				System.out.print("변경하실 부스트 클럭을 입력해주세요 : ");
+				reBoostclock = sc.nextLine();
+			}	
+			else if(choice.get(count).equals("사용전력")){
+				System.out.print("변경하실 사용 전력을 입력해주세요 : ");
+				rePowerusage = sc.nextLine();
+			}
+			else if(choice.get(count).equals("가격")){
+				System.out.print("변경하실 가격을 입력해주세요 : ");
+				rePrice = sc.nextInt();
+						  sc.nextLine();
+			}
+			else if(choice.get(count).equals("제조사")){
+				System.out.print("변경하실 제조사를 입력해주세요 : ");
+				reMfrname = sc.nextLine();
+			}
+			else if(choice.get(count).equals("소켓명")){
+				System.out.print("변경하실 소켓을 입력해주세요 : ");
+				reSocket = sc.nextLine();
+				
+			}
+			else if(choice.get(count).equals("재고")){
+				System.out.print("변경하실 재고 수량을 입력해주세요 : ");
+				reStock = sc.nextInt();
+						  sc.nextLine();
+			}
+			else if(choice.get(count).equals("출시일")) {
+				System.out.println("변경하실 출시일을 입력해주세요 : ");
+				reDate = dateConversion(sc.nextLine());
+			}
+			
+			count ++;
+
+		}//end while
+			
+	c.updateCpu(index, reName, reCinebench, reBaseclock, reBoostclock, rePowerusage, rePrice, reMfrname, reSocket, reStock, reDate);
+	}//end updateCpu
+	
+	public void updateVga() {
+			
+	}
+	
+	public void updateMainboard() {
+		
+	}
+	
+	
+	
+	
+	/**
+	 * 데이터 delete 메서드들
+	 */	
+	public void deleteCpu() {
+		System.out.println("CPU 삭제 메뉴입니다.");
+		c.selectCpu();
+		
+		System.out.print("삭제하실 CPU의 고유번호를 입력해주세요 : ");
+		int index = sc.nextInt();
+					sc.nextLine();
+					
+		c.deleteCpu(index);
+	}
+	
+	public void deleteVga() {
+			
+	}
+		
+	public void deleteMainboard() {
+		
+	}
+		
+	
+	//======================날짜 입력받기 메서드
+	public Date dateConversion(String day) {
+		java.util.Date parsedDate = null;
+		try {
+			parsedDate = format.parse(day);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
+		
+		return sqlDate;
+	}
 }//end Menu
+
+	
+	
+	
+	
+	
+	

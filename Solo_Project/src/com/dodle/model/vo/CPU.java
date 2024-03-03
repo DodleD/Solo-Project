@@ -36,10 +36,10 @@ public class CPU {
 
 	@Override
 	public String toString() {
-		return cpuNO + ", CPU 이름 :  " + cpuName + ", CPU 성능테스트 점수 : " + cpuCinebench + ", CPU 베이스 클럭 : "
+		return "고유번호 : " + cpuNO + ", CPU 이름 :  " + cpuName + ", CPU 성능테스트 점수 : " + cpuCinebench + ", CPU 베이스 클럭 : "
 				+ cpuBaseclock + ", CPU 부스트 클럭 : " + cpuBoostclook + ", \nCPU 사용전력 : " + cpuPowerusage
-				+ ", CPU 출시일 : " + ", CPU 가격 : " + cpuPrice + ", CPU 제조회사 : " + cpuMfrName
-				+ ", CPU 소켓 : " + cpuSocket + ", CPU 재고 : " + cpuStock;
+				+ ", CPU 출시일 : " + cpuRelease +", CPU 가격 : " + cpuPrice + ", CPU 제조회사 : " + cpuMfrName
+				+ ", CPU 소켓 : " + cpuSocket + ", CPU 재고 : " + cpuStock + "\n\n";
 	}
 
 	public final int getCpuNO() {
