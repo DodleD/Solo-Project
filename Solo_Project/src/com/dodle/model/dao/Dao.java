@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.dodle.model.vo.CPU;
 import com.dodle.model.vo.VGA;
@@ -128,19 +129,62 @@ public class Dao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "UPDATE CPUCCC "
-				+ "SET C_NAME = ?,"
-				+ "C_CINEBENCH = ?,"
-				+ "C_BASECLOCK = ?,"
-				+ "C_BOOSTCLOCK = ?,"
-				+ "C_POWERUSAGE = ?,"
-				+ "C_PRICE = ?,"
-				+ "C_MFRNAME = ?,"
-				+ "C_SOCKET = ?,"
-				+ "C_STOCK = ?,"
-				+ "C_RELEASE = ?"
-				+ "WHERE C_NO = ?";
-		
+		String sql = "UPDATE CPUCCC SET ";
+		int[] num = new int[CPU.class.getDeclaredFields().length];
+		int count=1;
+		if(cpu.getCpuName()!=null) {
+			sql += "C_NAME = ?";
+			num[0] = count;
+			count ++;
+		}
+		if(cpu.getCpuCinebench()!=0) {
+			sql += ", C_CINEBENCH = ?";
+			num[1] = count;
+			count++;
+		}
+		if(cpu.getCpuBaseclock()!=null) {
+			sql+= ", C_BASECLOCK = ?";
+			num[2] = count;
+			count++;
+		}
+		if(cpu.getCpuBoostclook()!=null) {
+			sql+= ", C_BOOSTCLOCK = ?";
+			num[3] = count;
+			count++;
+		}
+		if(cpu.getCpuPowerusage()!=null) {
+			sql+= ", C_POWERUSAGE = ?";
+			num[4] = count;
+			count++;
+		}
+		if(cpu.getCpuPrice()!=0) {
+			sql+= ", C_PRICE = ?";
+			num[5] = count;
+			count++;
+		}
+		if(cpu.getCpuMfrName()!=null) {
+			sql+=", C_MFRNAME = ?";
+			num[6] = count;
+			count++;
+		}
+		if(cpu.getCpuSocket()!=null) {
+			sql+=", C_SOCKET = ?";
+			num[7] = count;
+			count++;
+		}
+		if(cpu.getCpuStock()!=0){
+			sql+=", C_STOCK = ?";
+			num[8] = count;
+			count++;
+		}
+		if(cpu.getCpuRelease()!=null) {
+			sql+=", C_RELEASE = ?";
+			num[9] = count;
+			count++;
+		}
+		num[10]=count;
+		sql+=" WHERE C_NO = ?";
+
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 			System.out.println("접속완료");
@@ -149,17 +193,30 @@ public class Dao {
 			
 			pstmt = conn.prepareStatement(sql);
 			
-			pstmt.setString(1, cpu.getCpuName());
-			pstmt.setInt(2, cpu.getCpuCinebench());
-			pstmt.setString(3, cpu.getCpuBaseclock());
-			pstmt.setString(4, cpu.getCpuBoostclook());
-			pstmt.setString(5, cpu.getCpuPowerusage());
-			pstmt.setInt(6, cpu.getCpuPrice());
-			pstmt.setString(7, cpu.getCpuMfrName());
-			pstmt.setString(8, cpu.getCpuSocket());
-			pstmt.setInt(9, cpu.getCpuStock());
-			pstmt.setDate(10, cpu.getCpuRelease());
-			pstmt.setInt(11, cpu.getCpuNO());
+			
+			
+			if(num[0]!=0)
+				pstmt.setString(num[0], cpu.getCpuName());
+			if(num[1]!=0)
+				pstmt.setInt(num[1], cpu.getCpuCinebench());
+			if(num[2]!=0)
+				pstmt.setString(num[2], cpu.getCpuBaseclock());
+			if(num[3]!=0)	
+				pstmt.setString(num[3], cpu.getCpuBoostclook());
+			if(num[4]!=0)
+				pstmt.setString(num[4], cpu.getCpuPowerusage());
+			if(num[5]!=0)
+				pstmt.setInt(num[5], cpu.getCpuPrice());
+			if(num[6]!=0)
+				pstmt.setString(num[6], cpu.getCpuMfrName());
+			if(num[7]!=0)
+				pstmt.setString(num[7], cpu.getCpuSocket());
+			if(num[8]!=0)
+				pstmt.setInt(num[8], cpu.getCpuStock());
+			if(num[9]!=0)
+				pstmt.setDate(num[9], cpu.getCpuRelease());
+			if(num[10]!=0)
+				pstmt.setInt(num[10], cpu.getCpuNO());
 			
 			result = pstmt.executeUpdate();
 			
@@ -343,6 +400,7 @@ public class Dao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
+		
 		String sql = "UPDATE VGAVVV "
 				+ "SET V_NAME = ?,"
 				+ "V_BASECLOCK = ?,"
@@ -354,6 +412,7 @@ public class Dao {
 				+ "V_ZEROFAN = ?,"
 				+ "V_RELEASE = ?"
 				+ "WHERE V_NO = ?";
+	
 		
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");

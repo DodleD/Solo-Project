@@ -1,7 +1,6 @@
 package com.dodle.view;
 
 import java.sql.Date;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,11 +8,14 @@ import java.util.Scanner;
 import com.dodle.controller.Controller;
 import com.dodle.model.dao.Dao;
 import com.dodle.model.vo.CPU;
+import com.dodle.temp.temp;
 
 public class Menu {
 	Scanner sc = new Scanner(System.in);
 	Controller c = new Controller();
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+	temp t = new temp();
+	
 	Dao d = new Dao();
 	public void mainMenu() {
 		while(true) {
@@ -27,16 +29,16 @@ public class Menu {
 			sc.nextLine();
 			switch(menu) {
 			case 1:
-				insertParts();				
+				this.insertParts();				
 				break;
 			case 2:
-				updateParts();			
+				this.updateParts();			
 				break;
 			case 3:
-				deleteParts();				
+				this.deleteParts();				
 				break;
 			case 4:
-				selectParts();
+				this.selectParts();
 				break;
 			case 9:
 				System.out.println("시스템 종료");
@@ -99,7 +101,7 @@ public class Menu {
 				this.updateCpu("CPU");
 				break;
 			case 2:
-				this.updateVga();
+				this.updateVga("VGA");
 				break;
 			case 3:
 //				this.updateMainboard("Mainboard");
@@ -182,86 +184,11 @@ public class Menu {
      * 데이터 input 메서드들
      */
 	public void cpuInputData(String name) {
-		System.out.println("***** " + name + "추가입니다 *****");
-		
-		System.out.print(name + " 이름 : ");
-		String cpuName = sc.nextLine();
-		
-		System.out.print(name + " 벤치점수 : ");
-		int cpuCinebench = sc.nextInt();
-						   sc.nextLine();
-						   
-		System.out.print(name + " 베이스 클럭 : ");
-		String cpuBaseclock = sc.nextLine();
-		
-		System.out.print(name + " 부스트 클럭 : ");
-		String cpuBoostclock = sc.nextLine();
-		
-		System.out.print(name + " 사용 전력 : ");
-		String cpuPowerusage = sc.nextLine();
-	
-		System.out.print(name + " 가격 : ");
-		int cpuPrice = sc.nextInt();
-					   sc.nextLine();
-		
-		System.out.print(name + " 제조사 : ");
-		String cpuMfrName = sc.nextLine();
-		
-		System.out.print(name + " 소켓 : ");
-		String cpuSocket = sc.nextLine();
-		
-		System.out.print(name + " 출시일 : ");
-		Date sqlDate = dateConversion(sc.nextLine());
-		
-		
-		System.out.print(name + " 재고 : ");
-		int cpuStock = sc.nextInt();
-					   sc.nextLine();
-		
-		
-		c.insertCPU(cpuName, cpuCinebench, cpuBaseclock, cpuBoostclock, 
-				cpuPowerusage, cpuPrice, cpuMfrName, cpuSocket, cpuStock, sqlDate);
-		
-		
-		
+		t.InputData("CPU");
 	}//end cpuInputData
 	
 	public void vgaInputData(String name) {
-		System.out.println("***** " + name + "추가입니다 *****");
-		
-		System.out.print(name + " 이름 : ");
-		String vgaName = sc.nextLine();
-							   
-		System.out.print(name + " 베이스 클럭 : ");
-		String vgaBaseclock = sc.nextLine();
-		
-		System.out.print(name + " 부스트 클럭 : ");
-		String vgaBoostclock = sc.nextLine();
-		
-		System.out.print(name + " 사용 전력 : ");
-		String vgaPowerusage = sc.nextLine();
-	
-		System.out.print(name + " 가격 : ");
-		int vgaPrice = sc.nextInt();
-					   sc.nextLine();
-		
-		System.out.print(name + " 제조사(NVIDIA/AMD) : ");
-		String vgaMfrName = sc.nextLine();
-		
-		System.out.print(name + " 재고 : ");
-		int vgaStock = sc.nextInt();
-					   sc.nextLine();
-					   
-		System.out.println(name + " 제로 팬 여부(TRUE/FALSE) : ");
-		String vgaZerofan = sc.nextLine();
-		
-		System.out.print(name + " 출시일 : ");
-		Date sqlDate = dateConversion(sc.nextLine());
-		
-		c.insertVGA(vgaName, vgaBaseclock, vgaBoostclock, vgaPowerusage, 
-				 vgaPrice, vgaMfrName, vgaStock, vgaZerofan, sqlDate);
-		
-
+		t.InputData(name);
 	}//end vgaInputData
 	
 	public void MainboardInputDate(String name) {
@@ -274,19 +201,18 @@ public class Menu {
 	 * 데이터 update 메서드들
 	 */
 	public void updateCpu(String name) {
-		String reName = d.selectCpu().get(0).getCpuName();
-		int reCinebench = d.selectCpu().get(0).getCpuCinebench();
-		String reBaseclock = d.selectCpu().get(0).getCpuBaseclock();
-		String reBoostclock = d.selectCpu().get(0).getCpuBoostclook();
-		String rePowerusage = d.selectCpu().get(0).getCpuPowerusage();
-		int rePrice = d.selectCpu().get(0).getCpuPrice();
-		String reMfrname = d.selectCpu().get(0).getCpuMfrName();
-		String reSocket = d.selectCpu().get(0).getCpuSocket();
-		int reStock = d.selectCpu().get(0).getCpuStock();
-		Date reDate = d.selectCpu().get(0).getCpuRelease();
+		String reName = null ;
+		int reCinebench = 0 ;
+		String reBaseclock = null ;
+		String reBoostclock = null;
+		String rePowerusage = null;
+		int rePrice = 0 ;
+		String reMfrname = null;
+		String reSocket = null;
+		int reStock = 0 ;
+		Date reDate = null ;
 		System.out.println("***** " + name + "수정 입니다. *****");
 		c.selectCpu(); 
-		
 		System.out.print("\n수정하실 CPU 고유번호를 입력해주세요 : ");		
 		int index = sc.nextInt();
 					sc.nextLine();
@@ -305,60 +231,65 @@ public class Menu {
 			}// 이어받기
 			
 			if(choice.get(count).equals("이름")) {
-				System.out.print("변경하실 이름을 입력해주세요 : ");
-				reName = sc.nextLine();
+				System.out.print("***변경하실 이름을 입력해주세요*** : ");
+				reName = sc.nextLine(); 
+
 			}
 
 			else if(choice.get(count).equals("벤치")) {
-				System.out.print("변경하실 벤치 성능을 입력해주세요 : ");
+				System.out.print("***변경하실 벤치 성능을 입력해주세요*** : ");
 				reCinebench = sc.nextInt();
 							  sc.nextLine();
+
 			}
 			else if(choice.get(count).equals("베이스클럭")){
-				System.out.print("변경하실 베이스 클럭을 입력해주세요 : ");
+				System.out.print("***변경하실 베이스 클럭을 입력해주세요*** : ");
 				reBaseclock = sc.nextLine();
+
 
 			}
 			else if(choice.get(count).equals("부스트클럭")){
-				System.out.print("변경하실 부스트 클럭을 입력해주세요 : ");
+				System.out.print("***변경하실 부스트 클럭을 입력해주세요*** : ");
 				reBoostclock = sc.nextLine();
+
 			}	
 			else if(choice.get(count).equals("사용전력")){
-				System.out.print("변경하실 사용 전력을 입력해주세요 : ");
+				System.out.print("***변경하실 사용 전력을 입력해주세요*** : ");
 				rePowerusage = sc.nextLine();
 			}
 			else if(choice.get(count).equals("가격")){
-				System.out.print("변경하실 가격을 입력해주세요 : ");
+				System.out.print("***변경하실 가격을 입력해주세요*** : ");
 				rePrice = sc.nextInt();
 						  sc.nextLine();
 			}
 			else if(choice.get(count).equals("제조사")){
-				System.out.print("변경하실 제조사를 입력해주세요 : ");
+				System.out.print("***변경하실 제조사를 입력해주세요*** : ");
 				reMfrname = sc.nextLine();
 			}
 			else if(choice.get(count).equals("소켓명")){
-				System.out.print("변경하실 소켓을 입력해주세요 : ");
+				System.out.print("***변경하실 소켓을 입력해주세요*** : ");
 				reSocket = sc.nextLine();
 				
 			}
 			else if(choice.get(count).equals("재고")){
-				System.out.print("변경하실 재고 수량을 입력해주세요 : ");
+				System.out.print("***변경하실 재고 수량을 입력해주세요*** : ");
 				reStock = sc.nextInt();
 						  sc.nextLine();
 			}
 			else if(choice.get(count).equals("출시일")) {
-				System.out.println("변경하실 출시일을 입력해주세요 : ");
-				reDate = dateConversion(sc.nextLine());
+				System.out.println("***변경하실 출시일을 입력해주세요*** : ");
+				reDate = t.dateConversion(sc.nextLine());
 			}
 			
 			count ++;
 
 		}//end while
 			
-	c.updateCpu(index, reName, reCinebench, reBaseclock, reBoostclock, rePowerusage, rePrice, reMfrname, reSocket, reStock, reDate);
+	c.updateCpu(index, reName, reCinebench, reBaseclock, reBoostclock, 
+			rePowerusage, rePrice, reMfrname, reSocket, reStock, reDate);
 	}//end updateCpu
 	
-	public void updateVga() {
+	public void updateVga(String name) {
 		String reName = d.selectVga().get(0).getVgaName();
 		String reBaseclock = d.selectVga().get(0).getVgaBaseclock();
 		String reBoostclock = d.selectVga().get(0).getVgaBoostclock();
@@ -391,39 +322,39 @@ public class Menu {
 			
 			switch(choice.get(count)) {
 			case "이름":
-				System.out.print("변경하실 이름을 입력해주세요 : ");
+				System.out.print("***변경하실 이름을 입력해주세요*** : ");
 				reName = sc.nextLine();
 				break;
 			case "재고":
-				System.out.print("변경하실 재고 수량을 입력해주세요 : ");
+				System.out.print("***변경하실 재고 수량을 입력해주세요*** : ");
 				reStock = sc.nextInt();
 						  sc.nextLine();
 				break;
 			case "베이스클럭":
-				System.out.print("변경하실 베이스클럭을 입력해주세요 : ");
+				System.out.print("***변경하실 베이스클럭을 입력해주세요*** : ");
 				reBaseclock = sc.nextLine();
 				break;
 			case "부스트클럭":
-				System.out.print("변경하실 부스트클럭을 입력해주세요 : ");
+				System.out.print("***변경하실 부스트클럭을 입력해주세요*** : ");
 				reBoostclock = sc.nextLine();
 				break;
 			case "사용전력":
-				System.out.print("변경하실 사용전력 입력해주세요 : ");
+				System.out.print("***변경하실 사용전력 입력해주세요*** : ");
 				rePowerusage = sc.nextLine();
 				break;
 			case "가격":
-				System.out.print("변경하실 가격을 입력해주세요 : ");
+				System.out.print("***변경하실 가격을 입력해주세요*** : ");
 				rePrice = sc.nextInt();
 				break;
 			case "제조사":
-				System.out.print("변경하실 제조사를 입력해주세요 : ");
+				System.out.print("***변경하실 제조사를 입력해주세요*** : ");
 				reMfrName = sc.nextLine();
 				break;
 			case "제로팬여부":
 				reZerofan = sc.nextLine();
 				break;
 			case "출시일":
-				reDate = dateConversion(sc.nextLine());
+				reDate = t.dateConversion(sc.nextLine());
 				break;
 			default:
 				System.out.println("잘못입력하셨습니다. 다시 입력해주세요");
@@ -455,26 +386,12 @@ public class Menu {
 	 * 데이터 delete 메서드들
 	 */	
 	public void deleteCpu() {
-		System.out.println("CPU 삭제 메뉴입니다.");
-		System.out.println();
-		c.selectCpu();
-		
-		System.out.print("삭제하실 CPU의 고유번호를 입력해주세요 : ");
-		int index = sc.nextInt();
-					sc.nextLine();
-					
+		int index = t.deleteData("CPU");
 		c.deleteCpu(index);
 	}
 	
 	public void deleteVga() {
-		System.out.println("VGA 삭제 메뉴입니다.");
-		System.out.println();
-		c.selectVga();
-		
-		System.out.print("삭제하실 VGA의 고유번호를 입력해주세요 : ");
-		int index = sc.nextInt();
-					sc.nextLine();
-					
+		int index = t.deleteData("VGA");
 		c.deleteVga(index);
 	}
 		
@@ -483,20 +400,14 @@ public class Menu {
 	}
 		
 	
-	//======================날짜 입력받기 메서드
-	public Date dateConversion(String day) {
-		java.util.Date parsedDate = null;
-		try {
-			parsedDate = format.parse(day);
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		java.sql.Date sqlDate = new java.sql.Date(parsedDate.getTime());
-		
-		return sqlDate;
-	}
+
+
+
+
+
+
+
+
 }//end Menu
 
 	
