@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.List;
 
 import com.dodle.model.vo.CPU;
 import com.dodle.model.vo.VGA;
@@ -56,7 +55,6 @@ public class Dao {
 				pstmt.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -103,10 +101,8 @@ public class Dao {
 				
 			
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			try {
@@ -114,14 +110,13 @@ public class Dao {
 				stmt.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
 
 		return myCpu;
-	}
+	}//end selectCpu
 	
 	public int updateCpu(CPU cpu) {
 		int result = 0;
@@ -192,9 +187,7 @@ public class Dao {
 			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
 			
 			pstmt = conn.prepareStatement(sql);
-			
-			
-			
+		
 			if(num[0]!=0)
 				pstmt.setString(num[0], cpu.getCpuName());
 			if(num[1]!=0)
@@ -227,17 +220,14 @@ public class Dao {
 			}
 	
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			try {
 				pstmt.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
@@ -270,24 +260,23 @@ public class Dao {
 			}
 		
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
+			
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
+
 			e.printStackTrace();
 		} finally {
 			try {
 				pstmt.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
 		
 		return result;
-	}
+	}//end deleteCpu
 
 	public int insertVga(VGA vga) {
 		int result = 0;
@@ -319,19 +308,16 @@ public class Dao {
 				conn.commit();
 			} else {
 				conn.rollback();
-			}	
+			}
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
 				pstmt.close();
 				conn.close();				
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -375,10 +361,8 @@ public class Dao {
 			
 			
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
@@ -386,7 +370,6 @@ public class Dao {
 				stmt.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -442,23 +425,20 @@ public class Dao {
 			}
 	
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}finally {
 			try {
 				pstmt.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
 		return result;
-	}
+	}//end updateVga
 
 	public int deleteVga(int index) {
 		int result = 0;
@@ -485,23 +465,72 @@ public class Dao {
 			}
 		
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			try {
 				pstmt.close();
 				conn.close();
 			} catch (SQLException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			
 		}
 		
 		return result;
-	}
+	}//end deleteVga
+	
+	public int buyCPU(int index, int amount) {
+		int result = 0;
+		
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		int stock = this.selectCpu().get(0).getCpuStock();
+		
+		String sql = "UPDATE CPUCCC "
+				   + "SET C_Stock = ? "
+				   + "WHERE C_NO = ?";
 
-}
+		try {
+			Class.forName("oracle.jdbc.driver.OracleDriver");
+			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			
+			pstmt = conn.prepareStatement(sql);
+			
+			pstmt.setInt(1, stock - amount);
+			pstmt.setInt(2, index);
+			result = pstmt.executeUpdate();
+			
+			if(result >0) {
+				conn.commit();
+			}else {
+				conn.rollback();
+			}
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				pstmt.close();
+				conn.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return result;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+}//end Dao

@@ -26,12 +26,12 @@ public class Controller {
 	}
 	
 	public void selectCpu() {
-		System.out.println("CPU 조회 결과입니다.");
+		System.out.println("CPU 조회 결과입니다.\n");
 		
 		ArrayList<CPU> myCpu = new Dao().selectCpu();
 		
 		if(myCpu.isEmpty()) {
-			System.out.println("전체조회결과 없슴");
+			System.out.println("CPU에 대한 조회 결과가 존재하지 않습니다.");
 		}else {
 			System.out.println(myCpu);
 		}
@@ -52,6 +52,7 @@ public class Controller {
 		myCpu.setCpuStock(cpuStock);
 		myCpu.setCpuNO(CPUNO);
 		myCpu.setCpuRelease(cpuRelease);
+		
 		int result = new Dao().updateCpu(myCpu);
 		
 		if(result > 0) {
@@ -90,12 +91,12 @@ public class Controller {
 	}
 	
 	public void selectVga() {
-		System.out.println("VGA 조회 결과입니다.");
+		System.out.println("VGA 조회 결과입니다.\n");
 		
 		ArrayList<VGA> myVga = new Dao().selectVga();
 		
 		if(myVga.isEmpty()) {
-			System.out.println("전체조회결과 없슴");
+			System.out.println("VGA에 대한 조회 결과가 존재하지 않습니다.");
 		}else {
 			System.out.println(myVga);
 		}
@@ -135,4 +136,33 @@ public class Controller {
 		
 		
 	}
+
+	public void buyCPU(int index, int amount) {
+		int result = new Dao().buyCPU(index, amount);
+		
+		if(result > 0) {
+			System.out.println("\n"+amount + "개 구매 완료되었습니다.");
+		}else {
+			System.out.println("구매에 실패했습니다.(수량이 아닌 다른 이유)");
+		}
+	}
+
+	public void buyVGA(int index, int amount) {
+		
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }//end Controller
