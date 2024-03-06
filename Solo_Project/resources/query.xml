@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+
+<entry key="insertCpu">
+	INSERT INTO CPUCCC VALUES
+	 (SEQ_CPUNO.NEXTVAL, ?, ? ,? ,? ,? ,? ,? ,? ,? ,?)
+	</entry>
+	<entry key = "selectCpu">
+	SELECT * FROM CPUCCC
+	</entry>
+	<entry key = "updateCpu">
+		UPDATE CPUCCC SET 
+	</entry>
+	<entry key = "deleteCpu">
+		DELETE FROM CPUCCC WHERE C_NO = ?
+	</entry>
+	
+	
+	<!-- VGA entry -->
+	<entry key="insertVga">
+	INSERT INTO VGAVVV VALUES
+	(SEQ_VGANO.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	</entry>
+	<entry key = "selectVga">
+	SELECT * FROM VGAVVV
+	</entry>
+	<entry key = "updateVga">
+		UPDATE VGAVVV SET 
+		V_NAME = ?,
+		V_BASECLOCK = ?,
+		V_POWERUSAGE = ?,
+		V_PRICE = ?,
+		V_MFRNAME = ?,
+		V_STOCK = ?,
+		V_ZEROFAN = ?,
+		V_RELEASE = ?
+		WHERE V_NO = ?
+	</entry>
+	<entry key = "deleteVga">
+		DELETE FROM VGAVVV WHERE V_NO = ?
+	</entry>
+	<entry key = "buyCPU">
+		UPDATE CPUCCC 
+		SET C_Stock = ? 
+		WHERE C_NO = ?
+	</entry>
+	<entry key = "deleteVga">
+		DELETE FROM VGAVVV WHERE V_NO = ?
+	</entry>
+	
+	
+	
+	
+</properties>

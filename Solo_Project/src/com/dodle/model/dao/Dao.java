@@ -1,5 +1,7 @@
 package com.dodle.model.dao;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -7,23 +9,34 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import com.dodle.model.vo.CPU;
 import com.dodle.model.vo.VGA;
 
 public class Dao {
+private Properties prop = new Properties();
+	
+	public Dao() {
+		try {
+			prop.loadFromXML(new FileInputStream("resources/query.xml"));
+			prop.load(new FileInputStream("resources/driver.properties"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 	public int insertCpu(CPU cpu) {
 		
 		int result = 0;
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "INSERT INTO CPUCCC VALUES (SEQ_CPUNO.NEXTVAL, ?, ? ,? ,? ,? ,? ,? ,? ,? ,?)";
+		String sql = prop.getProperty("insertCpu");
+		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			System.out.println("OracleDriver 등록성공");
+			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, cpu.getCpuName());
@@ -70,12 +83,12 @@ public class Dao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM CPUCCC";
+		String sql = prop.getProperty("selectCpu");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 			
 			stmt = conn.createStatement();
 			
@@ -124,7 +137,7 @@ public class Dao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "UPDATE CPUCCC SET ";
+		String sql = prop.getProperty("updateCpu");
 		int[] num = new int[CPU.class.getDeclaredFields().length];
 		int count=1;
 		if(cpu.getCpuName()!=null) {
@@ -181,10 +194,9 @@ public class Dao {
 		sql+=" WHERE C_NO = ?";
 
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			System.out.println("접속완료");
+			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 			
 			pstmt = conn.prepareStatement(sql);
 		
@@ -241,12 +253,12 @@ public class Dao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "DELETE FROM CPUCCC WHERE C_NO = ?";
+		String sql = prop.getProperty("deleteCpu");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, index);
@@ -284,12 +296,12 @@ public class Dao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "INSERT INTO VGAVVV VALUES(SEQ_VGANO.NEXTVAL, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = prop.getProperty("insertVga");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setString(1, vga.getVgaName());
@@ -333,11 +345,11 @@ public class Dao {
 		Statement stmt = null;
 		ResultSet rset = null;
 		
-		String sql = "SELECT * FROM VGAVVV";
+		String sql = prop.getProperty("selectVga");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			Class.forName(prop.getProperty("driver"));
+			conn = DriverManager.getConnection(prop.getProperty("url"),prop.getProperty("username"), prop.getProperty("password"));
 			
 			stmt = conn.createStatement();
 			
@@ -384,24 +396,14 @@ public class Dao {
 		PreparedStatement pstmt = null;
 		
 		
-		String sql = "UPDATE VGAVVV "
-				+ "SET V_NAME = ?,"
-				+ "V_BASECLOCK = ?,"
-				+ "V_BOOSTCLOCK = ?,"
-				+ "V_POWERUSAGE = ?,"
-				+ "V_PRICE = ?,"
-				+ "V_MFRNAME = ?,"
-				+ "V_STOCK = ?,"
-				+ "V_ZEROFAN = ?,"
-				+ "V_RELEASE = ?"
-				+ "WHERE V_NO = ?";
+		String sql = prop.getProperty("updateVga");
 	
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(prop.getProperty("driver"));
 			System.out.println("접속완료");
 			
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			conn = DriverManager.getConnection(prop.getProperty("url"), prop.getProperty("username"), prop.getProperty("password"));
 			
 			pstmt = conn.prepareStatement(sql);
 			
@@ -446,12 +448,12 @@ public class Dao {
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		
-		String sql = "DELETE FROM VGAVVV WHERE V_NO = ?";
+		String sql = prop.getProperty("deleteVga");
 		
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
+			Class.forName(prop.getProperty("driver"));
 			
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			conn = DriverManager.getConnection(prop.getProperty("url"),prop.getProperty("username"), prop.getProperty("password"));
 			
 			pstmt = conn.prepareStatement(sql);
 			pstmt.setInt(1, index);
@@ -488,13 +490,11 @@ public class Dao {
 		PreparedStatement pstmt = null;
 		int stock = this.selectCpu().get(0).getCpuStock();
 		
-		String sql = "UPDATE CPUCCC "
-				   + "SET C_Stock = ? "
-				   + "WHERE C_NO = ?";
+		String sql = prop.getProperty("buyCPU");
 
 		try {
-			Class.forName("oracle.jdbc.driver.OracleDriver");
-			conn = DriverManager.getConnection("jdbc:oracle:thin:@localhost:1521:xe", "DDD", "DDD");
+			Class.forName(prop.getProperty("driver"));
+			conn = DriverManager.getConnection(prop.getProperty("url"),prop.getProperty("username"), prop.getProperty("password"));
 			
 			pstmt = conn.prepareStatement(sql);
 			

@@ -11,9 +11,9 @@ public class Menu {
 	Scanner sc = new Scanner(System.in);
 	Controller c = new Controller();
 	SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-	temp t = new temp();
-	
+	temp t = new temp();	
 	Dao d = new Dao();
+	
 	public void mainMenu() {
 		while(true) {
 			System.out.println("환영합니다, 컴퓨터가게 입니다.");
@@ -60,7 +60,7 @@ public class Menu {
 				break;
 			case 9:
 				System.out.println("이전 메뉴로");
-				break;
+				return;
 			default:
 				System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
 				break;
@@ -88,7 +88,7 @@ public class Menu {
 				break;
 			case 9:
 				System.out.println("이전 메뉴로");
-				break;
+				return;
 			default:
 				System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
 				break;
@@ -122,7 +122,7 @@ public class Menu {
 				break;
 			case 9:
 				System.out.println("이전 메뉴로");
-				break;
+				return;
 			default:
 				System.out.println("잘못 입력하셨습니다. 다시 입력해주세요");
 				break;
